@@ -1,13 +1,15 @@
-from dataclasses import dataclass, field
+from dataclasses import field
 from typing import Dict, Literal
 
+from .dataclass import nested_dataclass
 
-@dataclass
+
+@nested_dataclass
 class HumanInformation:
     email: str
 
 
-@dataclass
+@nested_dataclass
 class User:
     id: str
     type: Literal['person', 'bot']
@@ -15,7 +17,7 @@ class User:
     bot: Dict = field(default_factory=dict)
     object: str = 'user'
     name: str = ''
-    avatar: str = ''
+    avatar_url: str = ''
 
     def is_bot(self):
         return self.type == 'bot'

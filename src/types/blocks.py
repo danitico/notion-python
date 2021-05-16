@@ -1,10 +1,11 @@
-from dataclasses import dataclass, field
+from dataclasses import field
 from typing import List, Literal, Type
 
+from .dataclass import nested_dataclass
 from .rich_text import RichText
 
 
-@dataclass
+@nested_dataclass
 class Block:
     id = str
     type: Literal[

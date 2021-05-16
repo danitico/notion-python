@@ -1,18 +1,20 @@
-from dataclasses import dataclass, field
-from typing import List, Literal, Union
+from dataclasses import field
+from typing import Dict, List, Literal, Union
 
+from .dataclass import nested_dataclass
 from .misc import DateProperty
 from .rich_text import RichText
+from .users import User
 
 
-@dataclass
+@nested_dataclass
 class PageParent:
     type = Literal['database_id', 'page_id', 'workspace']
     database_id: str = None
     page_id: str = None
 
 
-@dataclass
+@nested_dataclass
 class SelectProperty:
     id: str
     name: str
@@ -23,7 +25,7 @@ class SelectProperty:
     ] = 'default'
 
 
-@dataclass
+@nested_dataclass
 class FormulaProperty:
     type: Literal['string', 'number', 'boolean', 'date']
     string: str = None
@@ -44,16 +46,35 @@ class FormulaProperty:
         return self.type == 'date'
 
 
-@dataclass
+@nested_dataclass
 class RelationProperty:
     id: str
 
 
-@dataclass
+@nested_dataclass
 class RollupProperty:
     type: Literal['number', 'date', 'array']
+    number: Union[int, float] = None
+    date: DateProperty = None
+    array: List[Dict] = field(default_factory=list)
 
-@dataclass
+@nested_dataclass
+class FileProperty:
+    name: str
+
+
+@nested_dataclass
+class TitleProperty:
+    title: List[RichText] = field(default_factory=list)
+
+
+@nested_dataclass
+class KeyValueObject:
+    key: str
+    value: Union[int, float]
+
+
+@nested_dataclass
 class Property:
     id: str
     type: Literal[
@@ -71,16 +92,27 @@ class Property:
     date: DateProperty = None
     formula: FormulaProperty = None
     relation: List[RelationProperty] = field(default_factory=list)
+    rollup: RollupProperty = None
+    people: List[User] = field(default_factory=list)
+    files: List[FileProperty] = field(default_factory=list)
+    checkbox: bool = None
+    url: str = None
+    email: str = None
+    phone_number: str = None
+    created_time: str = None
+    created_by: User = None
+    last_edited_time: str = None
+    last_edited_by: User = None
 
 
-@dataclass
+@nested_dataclass
 class Page:
     id: str
     created_time: str
     last_edited_time: str
     archived: bool
     parent: PageParent
-    properties: Property
+    properties: Union[List[KeyValueObject], TitleProperty]
     object: str = 'page'
 
     def is_top_level_page(self) -> bool:

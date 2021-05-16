@@ -1,11 +1,11 @@
-from dataclasses import dataclass
 from typing import Literal
 
+from .dataclass import nested_dataclass
 from .misc import DateProperty
 from .users import User
 
 
-@dataclass
+@nested_dataclass
 class Annotation:
     bold: bool
     italic: bool
@@ -21,28 +21,28 @@ class Annotation:
     ]
 
 
-@dataclass
+@nested_dataclass
 class Link:
     url: str
     type: str = 'url'
 
 
-@dataclass
+@nested_dataclass
 class Text:
     content: str
     link: Link = None
 
-@dataclass
+@nested_dataclass
 class PageMention:
     id: str
 
 
-@dataclass
+@nested_dataclass
 class DatabaseMention:
     id: str
 
 
-@dataclass
+@nested_dataclass
 class Mention:
     type: Literal['user', 'page', 'database', 'date']
     user: User = None
@@ -63,12 +63,12 @@ class Mention:
         return self.type == 'date'
 
 
-@dataclass
+@nested_dataclass
 class Equation:
     expression: str
 
 
-@dataclass
+@nested_dataclass
 class RichText:
     plain_text: str
     annotations: Annotation
