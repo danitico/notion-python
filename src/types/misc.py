@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Date:
+class DateProperty:
     start: str
     end: str = ''
 

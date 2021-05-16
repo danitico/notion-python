@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import List, Literal, Sequence, Union
+from typing import Literal
 
-from .misc import Date
+from .misc import DateProperty
 from .users import User
 
 
@@ -48,7 +48,7 @@ class Mention:
     user: User = None
     page: PageMention = None
     database: DatabaseMention = None
-    date: Date = None
+    date: DateProperty = None
 
     def is_user_mention(self) -> bool:
         return self.type == 'user'
