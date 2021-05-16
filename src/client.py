@@ -35,7 +35,7 @@ class UserEndpoint:
         except HTTPError as e:
             raise NotionException(e.response.content)
 
-        return response.json()['results']
+        return response.json()
 
     def get(self, user_id: str) -> Union[User, NotionError]:
         endpoint = f'{self.user_endpoint}{user_id}'
@@ -55,4 +55,4 @@ class UserEndpoint:
         except NotionException as e:
             return NotionError(e.code, e.message)
 
-        return [User(**item) for item in response] 
+        return [User(**item) for item in response['results']] 
