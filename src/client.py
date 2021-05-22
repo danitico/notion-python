@@ -10,13 +10,14 @@ from .constants import API_ENDPOINT, API_VERSION
 from .types.database import Database
 from .types.errors import NotionError
 from .types.misc import QueryParams
+from .types.page import Page
 from .types.users import User
 
 
 class NotionClient:
     def __init__(self, token: str) -> None:
         self.users = UserEndpoint(token)
-        self.databases = DatabaseEndoint(token)
+        self.databases = DatabaseEndpoint(token)
 
 
 class GenericEndpoint:
@@ -30,7 +31,7 @@ class GenericEndpoint:
 
         return response.json()
 
-class DatabaseEndoint(GenericEndpoint):
+class DatabaseEndpoint(GenericEndpoint):
     def __init__(self, token: str) -> None:
         self.database_endpoint: str = f'{API_ENDPOINT}/databases/'
         self.token: str = token
@@ -71,6 +72,9 @@ class DatabaseEndoint(GenericEndpoint):
         next_cursor = response['next_cursor'] if response['has_more'] else None
 
         return [Database(**item) for item in response['results']], next_cursor
+
+    def query(self, query_params: QueryParams) -> Union[Tuple[List[Page], Optional[str]], NotionError]:
+        pass
 
 
 class UserEndpoint(GenericEndpoint):
